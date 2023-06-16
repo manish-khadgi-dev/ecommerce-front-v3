@@ -1,5 +1,11 @@
+import Featured from '@/components/Featured';
 import Header from '@/components/Header';
 
 export default function HomePage() {
-  return <Header>test</Header>;
+  return (
+    <div>
+      <Header />
+      <Featured />
+    </div>
+  );
 }
