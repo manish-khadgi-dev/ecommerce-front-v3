@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import Center from './Center';
-import PrimaryBtn from './PrimaryBtn';
+import Button from './Button';
 
 const Bg = styled.div`
   background-color: #222;
@@ -20,7 +20,7 @@ const Desc = styled.p`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: 40px;
   img {
     max-width: 100%;
@@ -31,7 +31,7 @@ const Column = styled.div`
   display: flex;
   align-items: center;
 `;
-export default function ({ children }) {
+export default function () {
   return (
     <Bg>
       <Center>
@@ -44,8 +44,12 @@ export default function ({ children }) {
                 Consequuntur provident voluptatum minima quas amet porro beatae,
                 ratione sunt repellat aut.
               </Desc>
-              <button> Read more</button>
-              <PrimaryBtn> Add to cart</PrimaryBtn>
+              <Button outline white size="l">
+                Read more
+              </Button>
+              <Button primary size="l">
+                Add to cart
+              </Button>
             </div>
           </Column>
           <div>
