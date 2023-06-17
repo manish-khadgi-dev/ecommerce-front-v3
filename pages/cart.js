@@ -2,6 +2,7 @@ import { Button } from '@/components/Button';
 import { CartContext } from '@/components/CartContext';
 import Center from '@/components/Center';
 import Header from '@/components/Header';
+import Input from '@/components/Input';
 import Table from '@/components/Table';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -40,18 +41,54 @@ const ProductImageBox = styled.div`
   }
 `;
 
-const QuantityLabel = styled.div``;
+const QuantityLabel = styled.span`
+  padding: 0 15px;
+  display: block;
+  @media screen and (min-width: 768px) {
+    display: inline-block;
+    padding: 0 10px;
+  }
+`;
+
+const CityHolder = styled.div`
+  display: flex;
+  gap: 5px;
+`;
 
 export default function CartPage() {
-  const { cartProducts } = useContext(CartContext);
+  const { cartProducts, addProduct, removeProduct } = useContext(CartContext);
   const [products, setProducts] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [postCode, setPostCode] = useState('');
+  const [streetAdress, setStreetAdress] = useState('');
+  const [country, setCountry] = useState('');
+
   useEffect(() => {
     if (cartProducts.length > 0) {
       axios.post('/api/cart', { ids: cartProducts }).then((response) => {
         setProducts(response.data);
       });
+    } else {
+      setProducts([]);
     }
   }, [cartProducts]);
+
+  function moreOfThisProduct(id) {
+    addProduct(id);
+  }
+
+  function lessOfThisProduct(id) {
+    removeProduct(id);
+  }
+
+  let total = 0;
+  for (const productId of cartProducts) {
+    const price = products.find((p) => p._id === productId)?.price || 0;
+    total += price;
+  }
+
   return (
     <>
       <Header />
@@ -71,7 +108,7 @@ export default function CartPage() {
                 </thead>
                 <tbody>
                   {products.map((product) => (
-                    <tr>
+                    <tr key={product._id}>
                       <ProductInfoCell>
                         <ProductImageBox>
                           <img src={product.images[0]} alt="" />
@@ -79,14 +116,18 @@ export default function CartPage() {
                         {product.title}
                       </ProductInfoCell>
                       <td>
-                        <Button>-</Button>
+                        <Button onClick={() => lessOfThisProduct(product._id)}>
+                          -
+                        </Button>
                         <QuantityLabel>
                           {
                             cartProducts.filter((id) => id === product._id)
                               .length
                           }
                         </QuantityLabel>
-                        <Button>+</Button>
+                        <Button onClick={() => moreOfThisProduct(product._id)}>
+                          +
+                        </Button>
                       </td>
                       <td>
                         $
@@ -95,6 +136,11 @@ export default function CartPage() {
                       </td>
                     </tr>
                   ))}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>${total}</td>
+                  </tr>
                 </tbody>
               </Table>
             )}
@@ -102,11 +148,60 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <Box>
               <h2> Order Information </h2>
-              <input type="text" placeholder="Address 1" />
-              <input type="text" placeholder="Address 2" />
-              <Button black block>
-                Continue to payment
-              </Button>
+              <form method="post" action="/api/checkout">
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  name="name"
+                  onChange={(ev) => setName(ev.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="Email"
+                  value={email}
+                  name="email"
+                  onChange={(ev) => setEmail(ev.target.value)}
+                />
+                <CityHolder>
+                  <Input
+                    type="text"
+                    placeholder="City"
+                    value={city}
+                    name="city"
+                    onChange={(ev) => setCity(ev.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Post Code"
+                    value={postCode}
+                    name="postCode"
+                    onChange={(ev) => setPostCode(ev.target.value)}
+                  />
+                </CityHolder>
+                <Input
+                  type="text"
+                  placeholder="Street Address "
+                  value={streetAdress}
+                  name="streetAdress"
+                  onChange={(ev) => setStreetAdress(ev.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder=" Country "
+                  value={country}
+                  name="country"
+                  onChange={(ev) => setCountry(ev.target.value)}
+                />
+                <input
+                  type="hidden"
+                  name="products"
+                  value={cartProducts.join(',')}
+                />
+                <Button type="submit" black block>
+                  Continue to payment
+                </Button>
+              </form>
             </Box>
           )}
         </ColumnsWrapper>
