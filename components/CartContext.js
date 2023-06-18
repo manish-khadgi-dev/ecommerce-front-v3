@@ -33,7 +33,7 @@ export function CartContextProvider({ children }) {
     });
   }
 
-  function clearCart(productId) {
+  function clearCart() {
     setCartProducts([]);
   }
 
