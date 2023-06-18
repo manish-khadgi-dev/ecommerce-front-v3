@@ -24,6 +24,7 @@ const ImageButton = styled.div`
     `
       : `
       border-color: transparent;
+      opacity: .8;
     `}
   height: 40px;
   padding: 2px;

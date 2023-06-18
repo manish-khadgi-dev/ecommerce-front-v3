@@ -131,7 +131,7 @@ export default function CartPage() {
       <Header />
       <Center>
         <ColumnsWrapper>
-          <Box>
+          <WhiteBox>
             <h2> Cart </h2>
             {!cartProducts?.length && <div> Your cart is empty</div>}
             {products?.length && (
@@ -181,9 +181,9 @@ export default function CartPage() {
                 </tbody>
               </Table>
             )}
-          </Box>
+          </WhiteBox>
           {!!cartProducts?.length && (
-            <Box>
+            <WhiteBox>
               <h2> Order Information </h2>
 
               <Input
@@ -234,7 +234,7 @@ export default function CartPage() {
               <Button onClick={goToPayments} black block>
                 Continue to payment
               </Button>
-            </Box>
+            </WhiteBox>
           )}
         </ColumnsWrapper>
       </Center>
