@@ -11,7 +11,10 @@ import { styled } from 'styled-components';
 
 const ColumnsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 0.7fr;
+  grid-template-columns: 1fr;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.2fr 0.7fr;
+  }
   gap: 40px;
   margin-top: 40px;
 `;
@@ -21,19 +24,31 @@ const ProductInfoCell = styled.td`
 `;
 
 const ProductImageBox = styled.div`
-  max-width: 100px;
-  max-height: 100px;
-  padding: 10px;
+  width: 100px;
+  height: 80px;
+  padding: 2px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-
   img {
     max-width: 80px;
     max-height: 80px;
   }
+  @media screen and (min-width: 768px) {
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    img {
+      max-width: 80px;
+      max-height: 80px;
+    }
+  }
+`;
+
+const ProductTitle = styled.div`
+  padding: 5px;
 `;
 
 const QuantityLabel = styled.span`
@@ -150,7 +165,8 @@ export default function CartPage() {
                         <ProductImageBox>
                           <img src={product.images[0]} alt="" />
                         </ProductImageBox>
-                        {product.title}
+
+                        <ProductTitle>{product.title}</ProductTitle>
                       </ProductInfoCell>
                       <td>
                         <Button onClick={() => lessOfThisProduct(product._id)}>
